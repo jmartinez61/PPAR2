@@ -1,6 +1,6 @@
 # Common binaries
 GCC             ?= g++
-NVCC             ?= nvcc
+NVCC             ?= /usr/local/cuda/bin/nvcc
 
 # Extra user f
 EXTRA_NVCCFLAGS ?= -w 
