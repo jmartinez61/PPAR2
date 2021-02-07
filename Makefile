@@ -8,7 +8,7 @@ EXTRA_LDFLAGS   ?= -w
 
 # OS-specific build flags
 LDFLAGS   := -fopenmp -lcudart
-CCFLAGS   += -O3 -m64
+CCFLAGS   += -pg -O3 -m64
 INCLUDES = -I/usr/local/cuda/include
 LDNVCC = -L/usr/local/cuda/lib64
 GENCODE_SM35    := -gencode arch=compute_35,code=sm_35
@@ -20,7 +20,7 @@ all: build
 build: energy
 
 solver_omp.o: solver_omp.cpp
-	$(GCC) $(CCFLAGS) $(EXTRA_CCFLAGS) $(INCLUDES) -o $@ -c -w $< -fopenmp
+	$(GCC) $(CCFLAGS) $(EXTRA_CCFLAGS) $(INCLUDES) -o $@ -c -w $< -fopenmp 
 	
 wtime.o: wtime.cpp
 	$(GCC) $(CCFLAGS) $(EXTRA_CCFLAGS) $(INCLUDES) -o $@ -c -w $< -fopenmp

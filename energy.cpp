@@ -16,6 +16,7 @@ int main (int argc, char **argv){
 	int mode;
 	char *file_l, *file_p, *file_e, *file_a;
 	int nconformations;
+  int nthreads;
 
 	float *energy_desolv_CPU;
 	float *conformations_x, *conformations_y, *conformations_z;
@@ -34,8 +35,9 @@ int main (int argc, char **argv){
 	strcpy(file_e,"log");
 	strcpy(file_a,"input/ad4parameters.dat");
 	nconformations = 1;
+  nthreads = 1;
 
-	while ((c = getopt (argc, argv, "vr:m:l:a:r:x:g:y:z:s:c:e:n:h")) != -1) {
+	while ((c = getopt (argc, argv, "vr:m:l:a:r:x:g:y:z:s:c:e:n:h:t")) != -1) {
 	  switch (c) {
 	    	case 'v':
      			printf("Energy atomic Ligand-Protein Calculation v.1.0\n\n");
@@ -58,6 +60,8 @@ int main (int argc, char **argv){
 			case 'c':
 				nconformations = atoi(optarg);
 				break;
+      case 't':
+        nthreads = atoi(optarg);
 			case 'h':
 			case '?':
 	      		printf("Usage:\tenergy -r fichero_protein.mol2 -l fichero_ligand.mol2 -a fichero_parametros [-n DEVICE] [-c numero_conformaciones] [-h | -? HELP] \n");
@@ -82,7 +86,7 @@ int main (int argc, char **argv){
 	//ENERGY FOR EACH ATOM
 	energy_desolv_CPU = (float *)calloc(sizeof(float),nconformations);
 
-	solver_AU(mode, proteina.atoms, ligando.atoms, ligando.nlig,proteina.rec_x,proteina.rec_y,proteina.rec_z,conformations_x,conformations_y,conformations_z,proteina.rectype,ligando.ligtype,ligando.ql,proteina.qr,energy_desolv_CPU,a_params,nconformations);
+	solver_AU(mode, proteina.atoms, ligando.atoms, ligando.nlig,proteina.rec_x,proteina.rec_y,proteina.rec_z,conformations_x,conformations_y,conformations_z,proteina.rectype,ligando.ligtype,ligando.ql,proteina.qr,energy_desolv_CPU,a_params,nconformations,nthreads);
 
 	if (strlen(file_e) != 0)
 	{
